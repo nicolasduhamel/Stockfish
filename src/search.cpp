@@ -1838,8 +1838,10 @@ Value Search::Worker::qsearch(Position& pos, Stack* ss, Value alpha, Value beta)
             if (!capture)
                 continue;
 
-            // Do not search moves with bad enough SEE values
-            if (!pos.see_ge(move, -74))
+            // Do not search moves with bad enough SEE value
+            const int captHist = captureHistory[pos.moved_piece(move)][move.to_sq()]
+                                               [type_of(pos.piece_on(move.to_sq()))];
+            if (!pos.see_ge(move, -74 - captHist / 48))
                 continue;
         }
 
